@@ -1,0 +1,41 @@
+﻿@model WeatherEx2.Models.UserCityItem
+
+@{
+    ViewBag.Title = "EditCity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>@Model.CityName</h2>
+
+@using (Html.BeginForm("UpdateUserCity", "UserCity", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="@Model.FavoriteCity">Kedvencnek jelölés:</label>
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.FavoriteCity)
+                    @Html.ValidationMessageFor(model => model.FavoriteCity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" name="CityId" value="@Model.CityId" />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Mentés" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Vissza a városok listájára", "Index")
+</div>

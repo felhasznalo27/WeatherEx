@@ -1,0 +1,32 @@
+﻿@model WeatherEx2.ViewModels.InitialViewModel
+@{
+    ViewBag.Title = "Initial";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Initial</h2>
+
+<div class="form-group">
+    <table class="table">
+        <tr>
+            <td>
+                Városok száma az adatbázisban: @Model.ImportedCityCount
+            </td>
+        </tr>
+    </table>
+    <img src="~/Resources/f01d.png" alt="Teszt">
+
+    <div class="col-md-offset-3 col-md-10">
+        <br />
+        <span style="color:red;">
+            @ViewBag.Message
+        </span>
+    </div>
+
+
+</div>
+
+
+<h2>@Model.Message</h2>
+
+

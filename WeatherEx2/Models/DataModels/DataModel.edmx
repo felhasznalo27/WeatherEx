@@ -1,0 +1,472 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TCurrentWeatherInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="WeatherIcon" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="WeatherCode" Type="int" Nullable="false" />
+          <Property Name="WeatherDescription" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StationId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CurrentCycleHour" Type="datetime" Nullable="false" />
+          <Property Name="LastObservationTime" Type="datetime" Nullable="false" />
+          <Property Name="SunriseTime" Type="datetime" Nullable="false" />
+          <Property Name="SunsetTime" Type="datetime" Nullable="false" />
+          <Property Name="Temperature" Type="float" Nullable="false" />
+          <Property Name="TemperatureFeelsLike" Type="float" Nullable="false" />
+          <Property Name="Pressure" Type="float" Nullable="false" />
+          <Property Name="LiquidPercipitationRate" Type="int" Nullable="false" />
+          <Property Name="UvIndex" Type="int" Nullable="false" />
+          <Property Name="RelativeHumidity" Type="int" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TForecastWeatherInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="WeatherIcon" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="WeatherCode" Type="int" Nullable="false" />
+          <Property Name="WeatherDescription" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MinTemperature" Type="float" Nullable="false" />
+          <Property Name="MaxTemperature" Type="float" Nullable="false" />
+          <Property Name="WindSpeed" Type="float" Nullable="false" />
+          <Property Name="ValidDate" Type="datetime" Nullable="false" />
+          <Property Name="LiquidAmount" Type="int" Nullable="false" />
+          <Property Name="AveragePressure" Type="float" Nullable="false" />
+          <Property Name="AverageHumidity" Type="float" Nullable="false" />
+          <Property Name="AverageCloud" Type="int" Nullable="false" />
+          <Property Name="MaximumUv" Type="int" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TGlobalSettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GlobalKey" Type="varchar" MaxLength="250" />
+          <Property Name="GlobalValue" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="TImportedCity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="CityName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="StateCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CountryCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CountryFull" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Lat" Type="float" Nullable="false" />
+          <Property Name="Lon" Type="float" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TUser2City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="FavoriteCity" Type="bit" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TCurrentWeatherInfo_TImportedCity">
+          <End Role="TImportedCity" Type="Self.TImportedCity" Multiplicity="1" />
+          <End Role="TCurrentWeatherInfo" Type="Self.TCurrentWeatherInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TImportedCity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TCurrentWeatherInfo">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TForecastWeatherInfo_TImportedCity">
+          <End Role="TImportedCity" Type="Self.TImportedCity" Multiplicity="1" />
+          <End Role="TForecastWeatherInfo" Type="Self.TForecastWeatherInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TImportedCity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TForecastWeatherInfo">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUser2City_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="TUser2City" Type="Self.TUser2City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TUser2City">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUser2City_TImportedCity">
+          <End Role="TImportedCity" Type="Self.TImportedCity" Multiplicity="1" />
+          <End Role="TUser2City" Type="Self.TUser2City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TImportedCity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TUser2City">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DataModelStoreContainer">
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TCurrentWeatherInfo" EntityType="Self.TCurrentWeatherInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TForecastWeatherInfo" EntityType="Self.TForecastWeatherInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TGlobalSettings" EntityType="Self.TGlobalSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TImportedCity" EntityType="Self.TImportedCity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TUser2City" EntityType="Self.TUser2City" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TCurrentWeatherInfo_TImportedCity" Association="Self.FK_TCurrentWeatherInfo_TImportedCity">
+            <End Role="TImportedCity" EntitySet="TImportedCity" />
+            <End Role="TCurrentWeatherInfo" EntitySet="TCurrentWeatherInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TForecastWeatherInfo_TImportedCity" Association="Self.FK_TForecastWeatherInfo_TImportedCity">
+            <End Role="TImportedCity" EntitySet="TImportedCity" />
+            <End Role="TForecastWeatherInfo" EntitySet="TForecastWeatherInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUser2City_AspNetUsers" Association="Self.FK_TUser2City_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="TUser2City" EntitySet="TUser2City" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUser2City_TImportedCity" Association="Self.FK_TUser2City_TImportedCity">
+            <End Role="TImportedCity" EntitySet="TImportedCity" />
+            <End Role="TUser2City" EntitySet="TUser2City" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetUsers" EntityType="DataModel.AspNetUsers" />
+          <EntitySet Name="TGlobalSettings" EntityType="DataModel.TGlobalSettings" />
+          <EntitySet Name="TImportedCity" EntityType="DataModel.TImportedCity" />
+          <EntitySet Name="TUser2City" EntityType="DataModel.TUser2City" />
+          <AssociationSet Name="FK_TUser2City_AspNetUsers" Association="DataModel.FK_TUser2City_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="TUser2City" EntitySet="TUser2City" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUser2City_TImportedCity" Association="DataModel.FK_TUser2City_TImportedCity">
+            <End Role="TImportedCity" EntitySet="TImportedCity" />
+            <End Role="TUser2City" EntitySet="TUser2City" />
+          </AssociationSet>
+          <EntitySet Name="TCurrentWeatherInfo" EntityType="DataModel.TCurrentWeatherInfo" />
+          <EntitySet Name="TForecastWeatherInfo" EntityType="DataModel.TForecastWeatherInfo" />
+          <AssociationSet Name="FK_TCurrentWeatherInfo_TImportedCity" Association="DataModel.FK_TCurrentWeatherInfo_TImportedCity">
+            <End Role="TImportedCity" EntitySet="TImportedCity" />
+            <End Role="TCurrentWeatherInfo" EntitySet="TCurrentWeatherInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TForecastWeatherInfo_TImportedCity" Association="DataModel.FK_TForecastWeatherInfo_TImportedCity">
+            <End Role="TImportedCity" EntitySet="TImportedCity" />
+            <End Role="TForecastWeatherInfo" EntitySet="TForecastWeatherInfo" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TUser2City" Relationship="DataModel.FK_TUser2City_AspNetUsers" FromRole="AspNetUsers" ToRole="TUser2City" />
+        </EntityType>
+        <EntityType Name="TGlobalSettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GlobalKey" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="GlobalValue" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TImportedCity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="CityName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="StateCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CountryCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CountryFull" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Lat" Type="Double" Nullable="false" />
+          <Property Name="Lon" Type="Double" Nullable="false" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TUser2City" Relationship="DataModel.FK_TUser2City_TImportedCity" FromRole="TImportedCity" ToRole="TUser2City" />
+          <NavigationProperty Name="TCurrentWeatherInfo" Relationship="DataModel.FK_TCurrentWeatherInfo_TImportedCity" FromRole="TImportedCity" ToRole="TCurrentWeatherInfo" />
+          <NavigationProperty Name="TForecastWeatherInfo" Relationship="DataModel.FK_TForecastWeatherInfo_TImportedCity" FromRole="TImportedCity" ToRole="TForecastWeatherInfo" />
+        </EntityType>
+        <EntityType Name="TUser2City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="FavoriteCity" Type="Boolean" Nullable="false" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AspNetUsers" Relationship="DataModel.FK_TUser2City_AspNetUsers" FromRole="TUser2City" ToRole="AspNetUsers" />
+          <NavigationProperty Name="TImportedCity" Relationship="DataModel.FK_TUser2City_TImportedCity" FromRole="TUser2City" ToRole="TImportedCity" />
+        </EntityType>
+        <Association Name="FK_TUser2City_AspNetUsers">
+          <End Type="DataModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="DataModel.TUser2City" Role="TUser2City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TUser2City">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUser2City_TImportedCity">
+          <End Type="DataModel.TImportedCity" Role="TImportedCity" Multiplicity="1" />
+          <End Type="DataModel.TUser2City" Role="TUser2City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TImportedCity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TUser2City">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TCurrentWeatherInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="WeatherIcon" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="WeatherCode" Type="Int32" Nullable="false" />
+          <Property Name="WeatherDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StationId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentCycleHour" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastObservationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SunriseTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SunsetTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Temperature" Type="Double" Nullable="false" />
+          <Property Name="TemperatureFeelsLike" Type="Double" Nullable="false" />
+          <Property Name="Pressure" Type="Double" Nullable="false" />
+          <Property Name="LiquidPercipitationRate" Type="Int32" Nullable="false" />
+          <Property Name="UvIndex" Type="Int32" Nullable="false" />
+          <Property Name="RelativeHumidity" Type="Int32" Nullable="false" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TImportedCity" Relationship="DataModel.FK_TCurrentWeatherInfo_TImportedCity" FromRole="TCurrentWeatherInfo" ToRole="TImportedCity" />
+        </EntityType>
+        <EntityType Name="TForecastWeatherInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="WeatherIcon" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="WeatherCode" Type="Int32" Nullable="false" />
+          <Property Name="WeatherDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MinTemperature" Type="Double" Nullable="false" />
+          <Property Name="MaxTemperature" Type="Double" Nullable="false" />
+          <Property Name="WindSpeed" Type="Double" Nullable="false" />
+          <Property Name="ValidDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LiquidAmount" Type="Int32" Nullable="false" />
+          <Property Name="AveragePressure" Type="Double" Nullable="false" />
+          <Property Name="AverageHumidity" Type="Double" Nullable="false" />
+          <Property Name="AverageCloud" Type="Int32" Nullable="false" />
+          <Property Name="MaximumUv" Type="Int32" Nullable="false" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TImportedCity" Relationship="DataModel.FK_TForecastWeatherInfo_TImportedCity" FromRole="TForecastWeatherInfo" ToRole="TImportedCity" />
+        </EntityType>
+        <Association Name="FK_TCurrentWeatherInfo_TImportedCity">
+          <End Type="DataModel.TImportedCity" Role="TImportedCity" Multiplicity="1" />
+          <End Type="DataModel.TCurrentWeatherInfo" Role="TCurrentWeatherInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TImportedCity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TCurrentWeatherInfo">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TForecastWeatherInfo_TImportedCity">
+          <End Type="DataModel.TImportedCity" Role="TImportedCity" Multiplicity="1" />
+          <End Type="DataModel.TForecastWeatherInfo" Role="TForecastWeatherInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TImportedCity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TForecastWeatherInfo">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DataModelStoreContainer" CdmEntityContainer="DataEntities">
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="DataModel.AspNetUsers">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TGlobalSettings">
+            <EntityTypeMapping TypeName="DataModel.TGlobalSettings">
+              <MappingFragment StoreEntitySet="TGlobalSettings">
+                <ScalarProperty Name="GlobalValue" ColumnName="GlobalValue" />
+                <ScalarProperty Name="GlobalKey" ColumnName="GlobalKey" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TImportedCity">
+            <EntityTypeMapping TypeName="DataModel.TImportedCity">
+              <MappingFragment StoreEntitySet="TImportedCity">
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="Lon" ColumnName="Lon" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="CountryFull" ColumnName="CountryFull" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TUser2City">
+            <EntityTypeMapping TypeName="DataModel.TUser2City">
+              <MappingFragment StoreEntitySet="TUser2City">
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="FavoriteCity" ColumnName="FavoriteCity" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TCurrentWeatherInfo">
+            <EntityTypeMapping TypeName="DataModel.TCurrentWeatherInfo">
+              <MappingFragment StoreEntitySet="TCurrentWeatherInfo">
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="RelativeHumidity" ColumnName="RelativeHumidity" />
+                <ScalarProperty Name="UvIndex" ColumnName="UvIndex" />
+                <ScalarProperty Name="LiquidPercipitationRate" ColumnName="LiquidPercipitationRate" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="TemperatureFeelsLike" ColumnName="TemperatureFeelsLike" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="SunsetTime" ColumnName="SunsetTime" />
+                <ScalarProperty Name="SunriseTime" ColumnName="SunriseTime" />
+                <ScalarProperty Name="LastObservationTime" ColumnName="LastObservationTime" />
+                <ScalarProperty Name="CurrentCycleHour" ColumnName="CurrentCycleHour" />
+                <ScalarProperty Name="StationId" ColumnName="StationId" />
+                <ScalarProperty Name="WeatherDescription" ColumnName="WeatherDescription" />
+                <ScalarProperty Name="WeatherCode" ColumnName="WeatherCode" />
+                <ScalarProperty Name="WeatherIcon" ColumnName="WeatherIcon" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TForecastWeatherInfo">
+            <EntityTypeMapping TypeName="DataModel.TForecastWeatherInfo">
+              <MappingFragment StoreEntitySet="TForecastWeatherInfo">
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="MaximumUv" ColumnName="MaximumUv" />
+                <ScalarProperty Name="AverageCloud" ColumnName="AverageCloud" />
+                <ScalarProperty Name="AverageHumidity" ColumnName="AverageHumidity" />
+                <ScalarProperty Name="AveragePressure" ColumnName="AveragePressure" />
+                <ScalarProperty Name="LiquidAmount" ColumnName="LiquidAmount" />
+                <ScalarProperty Name="ValidDate" ColumnName="ValidDate" />
+                <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
+                <ScalarProperty Name="MaxTemperature" ColumnName="MaxTemperature" />
+                <ScalarProperty Name="MinTemperature" ColumnName="MinTemperature" />
+                <ScalarProperty Name="WeatherDescription" ColumnName="WeatherDescription" />
+                <ScalarProperty Name="WeatherCode" ColumnName="WeatherCode" />
+                <ScalarProperty Name="WeatherIcon" ColumnName="WeatherIcon" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

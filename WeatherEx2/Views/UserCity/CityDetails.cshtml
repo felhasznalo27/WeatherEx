@@ -1,0 +1,190 @@
+﻿@model WeatherEx2.ViewModels.CityDetailsViewModel
+
+@{
+    ViewBag.Title = "CityDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.City.CityName</h2>
+<hr />
+
+</table>
+
+<div>
+    <h4>Aktuális időjárás adatok:</h4>
+    @{
+        string iconCode = Model.CurrentWeather.WeatherIcon + ".png";
+        <img src="~/Resources/@iconCode" alt="@Model.CurrentWeather.WeatherDescription">
+
+    }
+    <dl class="dl-horizontal">
+        <dt>
+            Jelenleg:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentWeather.WeatherDescription)
+        </dd>
+        <dt>
+            Utolsó megfigy. idő:
+        </dt>
+
+        <dd>
+            @{string lastObservationTime = Model.CurrentWeather.LastObservationTime.ToString("yyyy.MM.dd. HH:mm");@lastObservationTime}
+        </dd>
+
+        <dt>
+            Napkelte:
+        </dt>
+
+        <dd>
+            @{string sunriseTime = Model.CurrentWeather.SunriseTime.ToString("HH:mm");@sunriseTime}
+        </dd>
+
+        <dt>
+            Napnyugta:
+        </dt>
+
+        <dd>
+            @{string sunsetTime = Model.CurrentWeather.SunsetTime.ToString("HH:mm");@sunsetTime}
+        </dd>
+
+        <dt>
+            Hőmérséklet:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentWeather.Temperature) °C
+        </dd>
+
+        <dt>
+            Hőérzet:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentWeather.TemperatureFeelsLike) °C
+        </dd>
+        <dt>
+            Páratartalom:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentWeather.RelativeHumidity) %
+        </dd>
+
+        <dt>
+            Légnyomás:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentWeather.Pressure) mb
+        </dd>
+
+        <dt>
+            UV Index (0-11+):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentWeather.UvIndex)
+        </dd>
+
+        <dt>
+            Csapadék val.:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentWeather.LiquidPercipitationRate) %
+        </dd>
+
+
+
+    </dl>
+</div>
+<h4>Előrejelzés:</h4>
+<table class="table">
+    <tr>
+        <th>
+
+        </th>
+        <th>
+            Dátum
+        </th>
+        <th>
+            Jellemző időjárás
+        </th>
+        <th>
+            Maximum hőmérséklet
+        </th>
+        <th>
+            Minimum hőmérséklet
+        </th>
+        <th>
+            Szélsebesség
+        </th>
+        <th>
+            Várható csapadék
+        </th>
+        <th>
+            Átlagos légnyomás
+        </th>
+        <th>
+            Átlagos páratartalom
+        </th>
+        <th>
+            Átlagosan felhős
+        </th>
+        <th>
+            Maximum UV Index (0-11+)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.ForecastWeatherList)
+    {
+        <tr>
+
+            <td>
+                @{
+                    string listIconCode = item.WeatherIcon + ".png";
+                    <img style="width: 50px; height: 50px;" src="~/Resources/@listIconCode" alt="@item.WeatherDescription">
+
+                }
+            </td>
+            <td>
+                @{string ValidDate = item.ValidDate.ToString("yyyy.MM.dd. dddd");@ValidDate}
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WeatherDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxTemperature) °C
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinTemperature) °C
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WindSpeed) m/s
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LiquidAmount) mm
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AveragePressure) mb
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AverageHumidity) %
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AverageCloud) %
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaximumUv)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Vissza a városok listájára", "Index")
+</div>
